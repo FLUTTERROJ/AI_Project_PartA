@@ -38,14 +38,13 @@ def move_stack(cord, direction, board):
     '''
 
     current_stack = board[cord]
-    target_cord = None
     try:
         target_cord = cord + direction
+        if target_cord in board:
+            board = move_stack(target_cord, direction, board)
+        board[target_cord] = CellState(color=current_stack.color, height=current_stack.height)
     except ValueError:
         pass
-    if target_cord in board:
-        board = move_stack(target_cord, direction, board)
-    board[target_cord] = CellState(color=current_stack.color, height=current_stack.height)
     if cord in board:
         del board[cord]
     return board
@@ -102,9 +101,8 @@ def get_legal_actions(board, cord):
             actions.append(MoveAction(cord, direction))
         elif board[target_cord].color == PlayerColor.BLUE and board[target_cord].height <= board[cord].height:
             actions.append(EatAction(cord, direction))
-        else:
-            if board[cord].height > 1:
-                actions.append(CascadeAction(cord, direction))
+        if board[cord].height > 1:
+            actions.append(CascadeAction(cord, direction))
     return actions
 
 def search(
