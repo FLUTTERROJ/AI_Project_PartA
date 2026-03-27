@@ -95,12 +95,14 @@ def get_legal_actions(board, cord):
     for direction in Direction:
         try:
             target_cord = cord + direction
+            target_state = board.get(target_cord)
         except ValueError:
             continue
-        if target_cord not in board or board[target_cord].color == PlayerColor.RED:
+        if target_state is None or board[target_cord].color == PlayerColor.RED:
             actions.append(MoveAction(cord, direction))
-        if target_cord and board[target_cord].color == PlayerColor.BLUE and board[target_cord].height <= board[cord].height:
-            actions.append(EatAction(cord, direction))
+        if target_state and board[target_cord].color == PlayerColor.BLUE:
+            if board[target_cord].height <= board[cord].height:
+                actions.append(EatAction(cord, direction))
         if board[cord].height > 1:
             actions.append(CascadeAction(cord, direction))
     return actions
