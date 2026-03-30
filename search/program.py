@@ -4,13 +4,6 @@
 from .core import BOARD_N, CellState, Coord, Direction, Action, MoveAction, EatAction, CascadeAction, PlayerColor
 from .utils import render_board
 import heapq
-
-'''
-define g(n), h(n) and f(n) where f(n) = g(n) + h(n):
-g(n): cost from start node to current node
-h(n): heuristic estimate from current node to goal
-f(n): total estimated cost of the path through n to the goal
-'''
     
 
 def heuristic(board: dict[Coord, CellState]) -> int:
@@ -24,7 +17,7 @@ def heuristic(board: dict[Coord, CellState]) -> int:
     Returns:
         The number of blue stacks remaining on the board.
     """
-
+    
     blue_stacks = 0
 
     for state in board.values():
